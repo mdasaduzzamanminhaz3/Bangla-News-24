@@ -1,6 +1,7 @@
 import Image from "next/image";
 import React from "react";
 import NavLinks from "./NavLinks";
+import Link from "next/link";
 // import UserInfo from "./UserInfo";
 const Navbar = () => {
   const date = new Date().toLocaleDateString("bn-BD", {
@@ -25,8 +26,12 @@ const Navbar = () => {
       </div>
 
       <div className="flex gap-2">
+        <Link href={'/signIn'}>
         <button className="btn bg-white">সাইন ইন</button>
+        </Link>
+        <Link href={'/signUp'}>
         <button className="btn bg-red-700 text-white ">সাইন আপ</button>
+        </Link>
       </div>
       <NavLinks/>
       
