@@ -1,13 +1,28 @@
 "use client";
-
+import { authClient } from "@/lib/auth-client";
 import Image from "next/image";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import React from "react";
+import { toast } from "react-hot-toast";
 
 const SignUpPage = () => {
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit =async (e: React.SubmitEvent<HTMLElement>) => {
     e.preventDefault();
-    console.log("form submitted");
+    const formData = new FormData(e.target);
+    const user = Object.fromEntries(formData.entries()) as {name:string,email:string,image:string,password:string}
+    const{data,error}= await authClient.signUp.email({
+        ...user,
+        callbackURL:"/"
+    })
+    if(data){
+        console.log(data);
+        redirect('/')
+    }
+    if(error){
+        console.log(error);
+        toast.error(error.message as string)
+    }
   };
 
   const handleGoogleSignIn = () => {
@@ -25,8 +40,8 @@ const SignUpPage = () => {
           {/* Header */}
           <div className="mb-7 text-center">
             <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-red-600 text-xl font-bold text-white shadow-sm">
-              <Link href={'/'}>
-              <Image src={'/logo.webp'} alt="logo" height={50} width={50}/>
+              <Link href={"/"}>
+                <Image src={"/logo.webp"} alt="logo" height={50} width={50} />
               </Link>
             </div>
 
@@ -157,7 +172,8 @@ const SignUpPage = () => {
           {/* Footer */}
           <p className="mt-7 text-center text-sm text-slate-500">
             ইতিমধ্যে অ্যাকাউন্ট আছে?{" "}
-            <Link href={'/signIn'}
+            <Link
+              href={"/signIn"}
               type="button"
               className="font-semibold text-red-600 hover:text-red-700"
             >

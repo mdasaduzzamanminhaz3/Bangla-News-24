@@ -6,46 +6,64 @@ import Link from "next/link";
 
 const UserInfo = () => {
   const { data: session } = authClient.useSession();
+
   const user = session?.user;
-  console.log(user);
 
   const handleSignout = async () => {
     await authClient.signOut();
   };
 
   return (
-    <div className="absolute right-4 top-4 flex items-center gap-3 text-sm">
+    <div className="absolute right-0 top-1/2 -translate-y-1/2">
       {user ? (
-        <div className="flex flex-col items-center gap-2">
-          <Link href={"/profile"}>
+        <div className="flex items-center gap-2 sm:gap-3">
+
+          {/* Profile */}
+          <Link
+            href="/profile"
+            className="group flex items-center gap-2 rounded-full p-1 transition hover:bg-neutral-100"
+          >
             <div className="avatar">
-              <div className="ring-primary ring-offset-base-100 w-10 rounded-full ring-2 ring-offset-2">
+              <div className="w-9 rounded-full ring-2 ring-red-600 ring-offset-2 sm:w-10">
                 <Image
-                  alt="Tailwind-CSS-Avatar-component"
-                  src={user?.image as string}
+                  src={user.image || "/default-avatar.png"}
+                  alt={user.name || "User"}
+                  width={40}
+                  height={40}
+                  className="h-full w-full object-cover"
                 />
               </div>
             </div>
+
+            {/* Hide name on small screens */}
+            <span className="hidden max-w-24 truncate text-sm font-medium text-neutral-700 md:block">
+              {user.name}
+            </span>
           </Link>
 
-          <h2>{user?.name}</h2>
-
-          <button onClick={handleSignout} className="btn btn-error btn-xs">
-            Signout
+          {/* Sign out */}
+          <button
+            onClick={handleSignout}
+            className="rounded-lg border border-neutral-200 px-2.5 py-1.5 text-xs font-medium text-neutral-600 transition hover:border-red-200 hover:bg-red-50 hover:text-red-700 sm:px-3"
+          >
+            <span className="hidden sm:inline">Sign out</span>
+            <span className="sm:hidden">↪</span>
           </button>
         </div>
       ) : (
-        <div>
-          <Link href={"/signin"}>
-            <button className="btn btn-ghost text-neutral-700 transition-colors hover:text-red-700">
-              সাইন ইন
-            </button>
+        <div className="flex items-center gap-1.5 sm:gap-2">
+          <Link
+            href="/signIn"
+            className="rounded-lg px-2.5 py-1.5 text-xs font-medium text-neutral-600 transition hover:bg-red-50 hover:text-red-700 sm:px-3 sm:text-sm"
+          >
+            সাইন ইন
           </Link>
-          <Link href={"/signup"}>
-            {" "}
-            <button className="btn  bg-red-700 px-3 py-1.5 font-semibold text-white transition-colors hover:bg-red-800">
-              সাইন আপ
-            </button>
+
+          <Link
+            href="/signUp"
+            className="rounded-lg bg-red-700 px-3 py-1.5 text-xs font-semibold text-white shadow-sm transition hover:bg-red-800 hover:shadow-md sm:px-4 sm:py-2 sm:text-sm"
+          >
+            সাইন আপ
           </Link>
         </div>
       )}

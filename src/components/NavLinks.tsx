@@ -1,26 +1,58 @@
+"use client";
+
 import Link from "next/link";
-import React from "react";
+import { usePathname } from "next/navigation";
+
 interface INavLink {
   id: string;
   title: string;
   slug: string;
   scrapable: boolean;
 }
-const NavLinks = async () => {
-  const res = await fetch("https://news-api-v2.vercel.app/api/categories");
-  const data = await res.json();
-  const navs: INavLink[] = data.data;
-  const filterNavLinks = navs.filter((n) => n.scrapable);
-//   console.log(filterNavLinks);
+
+interface NavLinksProps {
+  navs: INavLink[];
+}
+
+const NavLinks = ({ navs }: NavLinksProps) => {
+  const pathname = usePathname();
+
+  const filterNavLinks = navs.filter((nav) => nav.scrapable);
+
   return (
-    <div className="flex gap-5 justify-center mt-5">
-        <Link href={`/`}>হোম</Link>
-      {filterNavLinks.map((n, i) => (
-        <Link key={i} href={`/category/${n.slug}`}>
-          {n.title}
-        </Link>
-      ))}
-    </div>
+    <nav className="flex gap-1 overflow-x-auto border-t border-neutral-100 py-3 sm:justify-center sm:gap-2">
+      
+      {/* Home */}
+      <Link
+        href="/"
+        className={`shrink-0 rounded-lg px-3 py-2 text-sm font-medium transition sm:px-4 ${
+          pathname === "/"
+            ? "bg-red-700 text-white shadow-sm"
+            : "text-neutral-600 hover:bg-red-50 hover:text-red-700"
+        }`}
+      >
+        হোম
+      </Link>
+
+      {/* Categories */}
+      {filterNavLinks.map((nav, index) => {
+        const isActive = pathname === `/category/${nav.slug}`;
+
+        return (
+          <Link
+            key={`${nav.slug}-${index}`}
+            href={`/category/${nav.slug}`}
+            className={`shrink-0 rounded-lg px-3 py-2 text-sm font-medium transition sm:px-4 ${
+              isActive
+                ? "bg-red-700 text-white shadow-sm"
+                : "text-neutral-600 hover:bg-red-50 hover:text-red-700"
+            }`}
+          >
+            {nav.title}
+          </Link>
+        );
+      })}
+    </nav>
   );
 };
 

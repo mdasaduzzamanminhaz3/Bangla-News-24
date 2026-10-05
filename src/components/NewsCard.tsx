@@ -15,7 +15,7 @@ const NewsCard = ({news} : {news:News}) => {
 
   return (
     <Link href={`/news/${news.id}`}>
-    <div className="card bg-base-100  shadow-sm">
+    <div className="card bg-base-100 hover:text-red-700 shadow-sm">
       <figure>
         <Image
           height={600}

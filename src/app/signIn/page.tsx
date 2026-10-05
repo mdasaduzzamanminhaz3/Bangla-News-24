@@ -1,17 +1,35 @@
 "use client";
 
+import { authClient } from "@/lib/auth-client";
 import Image from "next/image";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import React from "react";
+import { toast } from "react-hot-toast";
 
 const SignInPage = () => {
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = async(e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("form submitted");
+    const formData = new FormData(e.target);
+     const user = Object.fromEntries(formData.entries()) as {email:string,password:string}
+    const{data,error}= await authClient.signIn.email({
+        ...user,
+        callbackURL:"/"
+    })
+     if(data){
+        console.log(data);
+        redirect('/')
+    }
+    if(error){
+        toast.error(error.message as string)
+    }
   };
 
-  const handleGoogleSignIn = () => {
-    console.log("google sign in");
+
+  const handleGoogleSignIn = async() => {
+    const data = await authClient.signIn.social({
+    provider: "google",
+  });
   };
 
   const handleGithubSignIn = () => {
@@ -108,7 +126,7 @@ const SignInPage = () => {
             <button
               type="button"
               onClick={handleGoogleSignIn}
-              className="flex h-11 w-full items-center justify-center gap-3 rounded-lg border border-slate-300 bg-white text-sm font-medium text-slate-700 transition hover:bg-slate-50 active:scale-[0.99]"
+              className="btn flex h-11 w-full items-center justify-center gap-3 rounded-lg border border-slate-300 bg-white text-sm font-medium text-slate-700 transition hover:bg-slate-50 active:scale-[0.99]"
             >
               <span className="text-base font-bold text-red-500">G</span>
               Google দিয়ে সাইন ইন করুন
@@ -117,7 +135,7 @@ const SignInPage = () => {
             <button
               type="button"
               onClick={handleGithubSignIn}
-              className="flex h-11 w-full items-center justify-center gap-3 rounded-lg bg-slate-900 text-sm font-medium text-white transition hover:bg-slate-800 active:scale-[0.99]"
+              className="btn flex h-11 w-full items-center justify-center gap-3 rounded-lg bg-slate-900 text-sm font-medium text-white transition hover:bg-slate-800 active:scale-[0.99]"
             >
               <span className="text-base">●</span>
               GitHub দিয়ে সাইন ইন করুন
