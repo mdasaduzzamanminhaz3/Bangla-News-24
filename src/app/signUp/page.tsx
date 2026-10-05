@@ -17,6 +17,7 @@ const SignUpPage = () => {
     })
     if(data){
         console.log(data);
+        toast.success("Please check your email.verify your account")
         redirect('/')
     }
     if(error){

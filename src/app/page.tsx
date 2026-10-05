@@ -12,7 +12,7 @@ interface IotherSection{
     category: string;
     imageUrl: string;
     imageAlt: string;
-
+    firstPublished:string
   }[];
 }
 interface Inews{
@@ -22,6 +22,7 @@ interface Inews{
     category: string;
     imageUrl: string;
     imageAlt: string;
+    firstPublished:string
 }
 export default async function Home() {
   const res = await fetch('https://news-api-v2.vercel.app/api/news/sections');

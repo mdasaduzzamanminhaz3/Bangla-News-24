@@ -8,6 +8,7 @@ interface INews {
   category: string;
   imageUrl: string;
   imageAlt: string;
+  firstPublished:string
 }
 const CategoryNews = async({params}:{params:{categoryId:string}}) => {
     const {categoryId} = await params;
