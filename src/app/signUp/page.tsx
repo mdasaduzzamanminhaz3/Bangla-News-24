@@ -26,12 +26,16 @@ const SignUpPage = () => {
     }
   };
 
-  const handleGoogleSignIn = () => {
-    console.log("google sign in");
+  const handleGoogleSignIn = async() => {
+    const data = await authClient.signIn.social({
+    provider: "google",
+  });
   };
 
-  const handleGithubSignIn = () => {
-    console.log("github sign in");
+  const handleGithubSignIn = async() => {
+     const data = await authClient.signIn.social({
+        provider: "github"
+    })
   };
 
   return (

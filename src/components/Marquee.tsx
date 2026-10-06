@@ -1,3 +1,4 @@
+
 import Link from "next/link";
 import MarqueeText from 'react-marquee-text';
 interface IHeadline {

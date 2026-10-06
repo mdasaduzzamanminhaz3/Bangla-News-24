@@ -17,7 +17,7 @@ const SignInPage = () => {
         callbackURL:"/"
     })
      if(data){
-        console.log(data);
+        // console.log(data);
         redirect('/')
     }
     if(error){
@@ -90,12 +90,12 @@ const SignInPage = () => {
                   পাসওয়ার্ড
                 </label>
 
-                <button
+                <Link href={'/forgot-password'}
                   type="button"
                   className="text-xs font-medium text-red-600 hover:text-red-700"
                 >
                   পাসওয়ার্ড ভুলে গেছেন?
-                </button>
+                </Link>
               </div>
 
               <input
