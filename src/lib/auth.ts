@@ -2,9 +2,21 @@ import { betterAuth } from "better-auth";
 import { MongoClient } from "mongodb";
 import { mongodbAdapter } from "@better-auth/mongo-adapter";
 import { Resend } from "resend";
-const client = new MongoClient(process.env.MONGODB_URL as string);
+const mongodbUrl = process.env.MONGODB_URL;
+
+if (!mongodbUrl) {
+  throw new Error("MONGODB_URL is not defined");
+}
+
+const client = new MongoClient(mongodbUrl);
 const db = client.db('bangla-news-24');
-const resend = new Resend(process.env.RESEND_API_KEY);
+const resendApiKey = process.env.RESEND_API_KEY;
+
+if (!resendApiKey) {
+  throw new Error("RESEND_API_KEY is not defined");
+}
+
+const resend = new Resend(resendApiKey);
 export const auth = betterAuth({
 emailAndPassword: { 
     enabled: true,
